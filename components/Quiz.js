@@ -8,7 +8,7 @@ import {
 import { faTrophy, faRedo } from "@fortawesome/free-solid-svg-icons";
 import quizData from "@/data/quizData";
 
-const page = () => {
+const QuizPage = () => {
   const [currentQuestion, setcurrentQuestion] = useState(0);
   const [timer, setTimer] = useState(30);
   const [score, setScore] = useState(0);
@@ -28,7 +28,6 @@ const page = () => {
       setScore(score + 1);
     }
     setSelectedAnswer(0);
-    console.log(userInput, score);
   };
 
   const handleNextQuestion = () => {
@@ -49,195 +48,172 @@ const page = () => {
       const interval = setTimeout(() => {
         setTimer(timer - 1);
       }, 1000);
-      return () => clearTimeout(interval); // Cleanup correctly
+      return () => clearTimeout(interval);
     } else {
       handleNextQuestion();
     }
-  }, [timer, selectedAnswer]); // Runs only when timer or selectedAnswer changes
+  }, [timer, selectedAnswer]);
 
   return (
-    <>
-      <div className="fixed inset-0 flex items-center justify-center bg-blue-100">
-        {showResult ? (
-          <div className="w-full max-w-2xl p-8 border rounded-lg shadow-2xl bg-white text-center">
-            {/* Trophy Icon */}
-            <div className="text-yellow-500 text-6xl mb-4">
-              <FontAwesomeIcon icon={faTrophy} />
-            </div>
-
-            {/* Heading */}
-            <h1 className="text-4xl font-extrabold text-gray-800">
-              Quiz Completed!
-            </h1>
-
-            {/* Score Section */}
-            <p className="text-xl mt-4 font-semibold text-gray-700">
-              Your Score:
-              <span className="text-blue-600 text-3xl font-bold ml-2">
-                {score}
-              </span>
-              / {quizData.length}
-            </p>
-
-            {/* Emoji-based Performance Feedback */}
-            <p className="mt-2 text-gray-500 text-lg">
-              {score === quizData.length
-                ? "🎉 Perfect Score! You're a genius!"
-                : score > quizData.length / 2
-                ? "👏 Well done! Keep it up!"
-                : "💪 Keep practicing, you'll get there!"}
-            </p>
-
-            {/* Restart Quiz Button */}
-            <button
-              className="mt-6 px-6 py-3 bg-blue-500 text-white font-semibold rounded-lg shadow-md hover:bg-blue-600 transition"
-              onClick={() => window.location.reload()} // Replace with proper state reset function
-            >
-              <FontAwesomeIcon icon={faRedo} className="mr-2" />
-              Restart Quiz
-            </button>
+    <div className="fixed inset-0 flex items-center justify-center bg-blue-100 px-4 sm:px-6 md:px-8">
+      {showResult ? (
+        <div className="w-full max-w-lg p-6 border rounded-lg shadow-xl bg-white text-center">
+          {/* Trophy Icon */}
+          <div className="text-yellow-500 text-5xl sm:text-6xl mb-4">
+            <FontAwesomeIcon icon={faTrophy} />
           </div>
-        ) : (
-          // Question Box
-          <div className="bg-white rounded-md shadow-xl w-full max-w-xl transform scale-110 opacity-100 transition-all duration-300">
-            {/* Question header */}
-            <header className="flex items-center justify-between border-gray-300 px-6 py-3 shadow-lg">
-              <h2 className="text-2xl font-semibold">Quiz Platform </h2>
-              <div className="flex items-center bg-blue-100 border border-blue-300 text-blue-900 px-3 py-2 rounded-md">
-                <span className="text-sm">Time Left</span>
-                <span
-                  className={`ml-4 px-3 py-1 text-white rounded-md transition-all 
-            ${timer < 10 ? "bg-red-600 animate-heartbeat" : "bg-gray-800"}`}
-                >
-                  {timer}
-                </span>
-              </div>
-            </header>
-            {/* Question Section */}
-            <div
-              key={currentQuestion} // Ensures animation triggers on question change
-              className="p-6 space-y-2 transition-opacity duration-1000 ease-in-out opacity-100 translate-y-0 animate-fadeIn"
-            >
+
+          {/* Heading */}
+          <h1 className="text-3xl sm:text-4xl font-extrabold text-gray-800">
+            Quiz Completed!
+          </h1>
+
+          {/* Score Section */}
+          <p className="text-lg sm:text-xl mt-4 font-semibold text-gray-700">
+            Your Score:
+            <span className="text-blue-600 text-2xl sm:text-3xl font-bold ml-2">
+              {score}
+            </span>{" "}
+            / {quizData.length}
+          </p>
+
+          {/* Feedback Message */}
+          <p className="mt-2 text-gray-500 text-md sm:text-lg">
+            {score === quizData.length
+              ? "🎉 Perfect Score! You're a genius!"
+              : score > quizData.length / 2
+              ? "👏 Well done! Keep it up!"
+              : "💪 Keep practicing, you'll get there!"}
+          </p>
+
+          {/* Restart Quiz Button */}
+          <button
+            className="mt-6 px-5 py-3 bg-blue-500 text-white font-semibold rounded-lg shadow-md hover:bg-blue-600 transition w-full sm:w-auto"
+            onClick={() => window.location.reload()}
+          >
+            <FontAwesomeIcon icon={faRedo} className="mr-2" />
+            Restart Quiz
+          </button>
+        </div>
+      ) : (
+        // Question Box
+        <div className="bg-white rounded-md shadow-xl w-full max-w-xl p-4 sm:p-6 transform scale-100 transition-all duration-300">
+          {/* Question header */}
+          <header className="flex items-center justify-between border-b border-gray-300 px-4 py-3">
+            <h2 className="text-lg sm:text-2xl font-semibold">Quiz Platform</h2>
+            <div className="flex items-center bg-blue-100 border border-blue-300 text-blue-900 px-3 py-2 rounded-md">
+              <span className="text-sm">Time Left</span>
+              <span
+                className={`ml-3 px-3 py-1 text-white rounded-md transition-all 
+                ${timer < 10 ? "bg-red-600 animate-pulse" : "bg-gray-800"}`}
+              >
+                {timer}
+              </span>
+            </div>
+          </header>
+
+          {/* Question Section */}
+          <div className="p-4 sm:p-6 space-y-3">
+            <p className="text-md sm:text-lg">
+              {quizData[currentQuestion].question}
+            </p>
+
+            {/* Options Section */}
+            {quizData[currentQuestion].type === "mcq" ? (
               <div className="space-y-2">
-                <p className="text-lg mb-6">
-                  {quizData[currentQuestion].question}
-                </p>
+                {quizData[currentQuestion].options.map((option, index) => {
+                  const isCorrect = index === quizData[currentQuestion].answer;
+                  const isSelected = index === selectedAnswer;
+
+                  return (
+                    <button
+                      key={index}
+                      className={`flex justify-between px-4 py-3 border rounded w-full text-left transition-all duration-300 
+                        ${
+                          selectedAnswer !== null
+                            ? isSelected
+                              ? isCorrect
+                                ? "bg-green-100 border-green-500"
+                                : "bg-red-100 border-red-500"
+                              : isCorrect
+                              ? "bg-green-100 border-green-500"
+                              : "bg-gray-100 cursor-default"
+                            : "bg-blue-50 hover:bg-blue-100"
+                        }`}
+                      onClick={() => handleAnswerClick(index)}
+                      disabled={selectedAnswer !== null}
+                    >
+                      <p>{option}</p>
+
+                      {selectedAnswer !== null &&
+                        (isCorrect ? (
+                          <FontAwesomeIcon
+                            icon={faCircleCheck}
+                            size="lg"
+                            className="text-green-600"
+                          />
+                        ) : isSelected ? (
+                          <FontAwesomeIcon
+                            icon={faCircleXmark}
+                            size="lg"
+                            className="text-red-600"
+                          />
+                        ) : null)}
+                    </button>
+                  );
+                })}
               </div>
+            ) : (
+              <div className="mt-4">
+                <input
+                  type="number"
+                  className="w-full px-4 py-3 border rounded bg-blue-50"
+                  value={userInput}
+                  onChange={(e) => setUserInput(e.target.value)}
+                  onKeyDown={(e) => {
+                    if (e.key === "Enter") {
+                      handleSubmitIntegerAnswer();
+                    }
+                  }}
+                />
+                <button
+                  className={`w-full p-2 mt-2 text-white rounded ${
+                    selectedAnswer !== null
+                      ? "bg-gray-600"
+                      : "bg-blue-500 hover:bg-blue-600"
+                  }`}
+                  onClick={handleSubmitIntegerAnswer}
+                  disabled={selectedAnswer !== null}
+                >
+                  {selectedAnswer !== null ? "Answer Submitted" : "Submit Answer"}
+                </button>
+              </div>
+            )}
+          </div>
 
-              {/* Options Section */}
-              {quizData[currentQuestion].type === "mcq" ? (
-                <div className="space-y-2">
-                  {quizData[currentQuestion].options.map((option, index) => {
-                    const isCorrect =
-                      index === quizData[currentQuestion].answer;
-                    const isSelected = index === selectedAnswer;
-
-                    return (
-                      <button
-                        key={index}
-                        className={`flex justify-between px-4 py-3 border rounded w-full transition-all duration-300
+          {/* Footer */}
+          <footer className="flex items-center justify-between px-4 sm:px-6 py-4 border-t border-gray-300">
+            <span className="text-sm sm:text-md">
+              <strong>{currentQuestion + 1}</strong> of <strong>{quizData.length}</strong> Questions
+            </span>
+            <button
+              className={`px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition 
                 ${
-                  selectedAnswer !== null
-                    ? isSelected
-                      ? isCorrect
-                        ? "bg-green-100 border-green-500" // Correct Answer Selected
-                        : "bg-red-100 border-red-500" // Incorrect Answer Selected
-                      : isCorrect
-                      ? "bg-green-100 border-green-500" // Highlight Correct Answer if Incorrect Answer Selected
-                      : "bg-transparent border-gray-300 cursor-default" // Disable Other Buttons
-                    : "bg-blue-50 hover:bg-blue-100 hover:border-blue-400"
+                  selectedAnswer === null
+                    ? "opacity-50 cursor-not-allowed"
+                    : "opacity-100 cursor-pointer"
                 }
               `}
-                        onClick={() => handleAnswerClick(index)}
-                        disabled={selectedAnswer !== null}
-                      >
-                        <p
-                          className={
-                            isSelected
-                              ? isCorrect
-                                ? "text-[#23903c]"
-                                : "text-[#a42834]"
-                              : ""
-                          }
-                        >
-                          {option}
-                        </p>
-
-                        {/* Show ✅ or ❌ only if an answer is selected */}
-                        {selectedAnswer !== null &&
-                          (isCorrect ? (
-                            <FontAwesomeIcon
-                              icon={faCircleCheck}
-                              size="xl"
-                              style={{ color: "#23903c" }}
-                            />
-                          ) : isSelected ? (
-                            <FontAwesomeIcon
-                              icon={faCircleXmark}
-                              size="xl"
-                              style={{ color: "#a42834" }}
-                            />
-                          ) : null)}
-                      </button>
-                    );
-                  })}
-                </div>
-              ) : (
-                <div className="mt-4">
-                  <input
-                    type="number"
-                    className="bg-blue-50 justify-between px-4 py-3 border rounded w-full"
-                    value={userInput}
-                    onChange={(e) => setUserInput(e.target.value)}
-                    onKeyDown={(e) => {
-                      if (e.key === "Enter") {
-                        handleSubmitIntegerAnswer();
-                      }
-                    }}
-                  />
-                  <button
-                    className={`${
-                      selectedAnswer !== null
-                        ? "w-full p-2 mt-2 bg-slate-600 text-white rounded"
-                        : "w-full p-2 mt-2 bg-blue-500 text-white rounded"
-                    }`}
-                    onClick={handleSubmitIntegerAnswer}
-                    disabled={selectedAnswer !== null}
-                  >
-                    {selectedAnswer !== null
-                      ? "Answer Submitted"
-                      : "Submit Answer"}
-                  </button>
-                </div>
-              )}
-            </div>
-            {/* Footer */}
-            <footer className="flex items-center justify-between px-8 py-4 border-t border-gray-300">
-              <div className="text-md">
-                <span className="font-bold">{currentQuestion + 1}</span> of{" "}
-                <span className="font-bold">{quizData.length}</span> Questions
-              </div>
-              <button
-                className={`px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition 
-                  ${
-                    selectedAnswer === null
-                      ? "opacity-50 cursor-not-allowed"
-                      : "opacity-100 cursor-pointer"
-                  }
-                `}
-                onClick={handleNextQuestion}
-                disabled={selectedAnswer === null}
-              >
-                {currentQuestion + 1 === quizData.length
-                  ? "Submit Quiz"
-                  : "Next Question"}
-              </button>
-            </footer>
-          </div>
-        )}
-      </div>
-    </>
+              onClick={handleNextQuestion}
+              disabled={selectedAnswer === null}
+            >
+              {currentQuestion + 1 === quizData.length ? "Submit Quiz" : "Next Question"}
+            </button>
+          </footer>
+        </div>
+      )}
+    </div>
   );
 };
 
-export default page;
+export default QuizPage;
