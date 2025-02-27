@@ -15,7 +15,7 @@ This project is an interactive quiz platform built with React. It allows users t
 
 1. Clone the repository:
    ```bash
-   git clone https://github.com/your-username/interactive-quiz-platform.git
+   git clone https://github.com/Aviisaud/Interactive-Quiz-Platform.git
    ```
 
 2. Navigate to the project directory:
